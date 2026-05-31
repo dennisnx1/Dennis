@@ -3,14 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Donation</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-* {
-    box-sizing: border-box;
-    font-family: 'Lalezar', cursive;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -20,9 +15,9 @@ body {
     justify-content: center;
     color: #fff;
     overflow: hidden;
+    font-family: 'Lalezar', cursive;
 }
 
-/* ویدیو بک گراند */
 #bgVideo {
     position: fixed;
     inset: 0;
@@ -33,7 +28,6 @@ body {
     filter: brightness(0.45) blur(1px);
 }
 
-/* گرادینت روی ویدیو */
 .overlay {
     position: fixed;
     inset: 0;
@@ -43,86 +37,128 @@ body {
 
 .container {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-/* عنوان */
 .title {
-    font-size: 40px;
-    margin-bottom: 35px;
-    text-shadow:
-        0 4px 15px rgba(0,0,0,.6),
-        0 0 25px rgba(190,140,255,.7);
+    font-size: 38px;
+    text-shadow: 0 4px 15px rgba(0,0,0,.6), 0 0 25px rgba(190,140,255,.7);
 }
 
-/* کارت بانکی */
-.card {
+.bank-card {
     width: 380px;
-    height: 250px;
-    padding: 28px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #9f6bff, #4b1dbd);
-    box-shadow:
-        0 30px 60px rgba(0,0,0,.5),
-        inset 0 0 40px rgba(255,255,255,.15);
+    height: 220px;
+    border-radius: 22px;
+    background: linear-gradient(140deg, #6c3fcf 0%, #3a1690 60%, #1e0b5e 100%);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+    border: 0.5px solid rgba(255,255,255,0.15);
+    transition: transform 0.18s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 28px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.55);
 }
 
-/* نور کارت */
-.card::after {
+.bank-card:hover  { transform: scale(1.04); }
+.bank-card:active { transform: scale(0.97); }
+
+.bank-card::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right,
-        rgba(255,255,255,.35),
-        transparent 45%);
+    top: -40px; left: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(200,160,255,0.25) 0%, transparent 70%);
+    pointer-events: none;
 }
 
-/* شماره کارت */
-.card-number {
-    margin-top: 60px;
-    font-size: 28px;
-    letter-spacing: 3px;
-    text-align: center;
-    color: #f7edff;
-    -webkit-text-stroke: 1px rgba(60,0,120,.9);
-    text-shadow:
-        0 4px 10px rgba(0,0,0,.7),
-        0 0 14px rgba(210,170,255,.7);
+.bank-card::after {
+    content: "";
+    position: absolute;
+    bottom: -55px; right: -55px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
 }
 
-/* دکمه کپی */
-.copy-btn {
-    margin-top: 30px;
-    padding: 12px 28px;
-    border-radius: 16px;
-    border: none;
-    background: linear-gradient(135deg, #e0c3ff, #a855f7);
-    color: #2a003f;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0,0,0,.4);
-    transition: 0.25s;
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.copy-btn:hover {
-    transform: scale(1.1);
+.chip {
+    width: 40px;
+    height: 30px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #e0c97f, #b8960c);
+    border: 0.5px solid rgba(255,255,255,0.2);
 }
 
-/* پیام کپی */
+.bank-logo {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+}
+
+.card-number-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card-group {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+
+.card-holder {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 10px rgba(150,80,255,0.6);
+}
+
+.tap-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+}
+
 .copied {
-    margin-top: 14px;
     font-size: 16px;
-    color: #e9d5ff;
+    color: #c4f0c4;
     opacity: 0;
     transition: 0.3s;
 }
 </style>
 </head>
-
 <body>
 
-<!-- ویدیو بک گراند -->
 <video id="bgVideo" autoplay loop muted playsinline>
     <source src="bg.mp4" type="video/mp4">
 </video>
@@ -132,32 +168,46 @@ body {
 <div class="container">
     <div class="title">شماره کارت برای دونیت</div>
 
-    <div class="card">
-        <div class="card-number" id="cardNumber">
-            6037&nbsp;6981&nbsp;1893&nbsp;0903
+    <div class="bank-card" onclick="copyCard()">
+
+        <div class="card-top">
+            <div class="chip"></div>
+            <div class="bank-logo">BANK CARD</div>
         </div>
 
-        <button class="copy-btn" onclick="copyCard()">
-            📋 کپی شماره کارت
-        </button>
-
-        <div class="copied" id="copiedText">
-            ✅ شماره کارت کپی شد
+        <div class="card-number-row">
+            <span class="card-group">6037</span>
+            <span class="card-group">6981</span>
+            <span class="card-group">1893</span>
+            <span class="card-group">0903</span>
         </div>
+
+        <div class="card-bottom">
+            <div>
+                <div class="card-label">CARD HOLDER</div>
+                <div class="card-holder">Dennis</div>
+            </div>
+            <div class="tap-hint">📋 کپی</div>
+        </div>
+
     </div>
+
+    <div class="copied" id="copiedText">✅ شماره کارت کپی شد</div>
 </div>
 
 <script>
 function copyCard() {
     const number = "6037698118930903";
-
-    // روش جدید
     if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(number).then(showCopied);
+        navigator.clipboard.writeText(number).then(showCopied).catch(fallback);
     } else {
-        // fallback برای GitHub Pages قدیمی / موبایل
+        fallback();
+    }
+    function fallback() {
         const temp = document.createElement("textarea");
         temp.value = number;
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
         document.body.appendChild(temp);
         temp.select();
         document.execCommand("copy");
@@ -165,13 +215,10 @@ function copyCard() {
         showCopied();
     }
 }
-
 function showCopied() {
     const text = document.getElementById("copiedText");
     text.style.opacity = 1;
-    setTimeout(() => {
-        text.style.opacity = 0;
-    }, 2000);
+    setTimeout(() => text.style.opacity = 0, 2000);
 }
 </script>
 

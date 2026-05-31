@@ -23,21 +23,21 @@ body {
 }
 
 /* ویدیو بک گراند */
-video {
+#bgVideo {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: -2;
-    filter: brightness(0.55);
+    filter: brightness(0.45) blur(1px);
 }
 
-/* لایه گرادینت روی ویدیو */
+/* گرادینت روی ویدیو */
 .overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, #7b2cffaa, #2b0a3dee 70%);
+    background: radial-gradient(circle at top, #7b2cff88, #16001fdd 75%);
     z-index: -1;
 }
 
@@ -45,70 +45,75 @@ video {
     text-align: center;
 }
 
+/* عنوان */
 .title {
-    font-size: 38px;
-    margin-bottom: 30px;
+    font-size: 40px;
+    margin-bottom: 35px;
     text-shadow:
-        0 4px 15px rgba(0,0,0,.5),
-        0 0 20px rgba(180,120,255,.6);
+        0 4px 15px rgba(0,0,0,.6),
+        0 0 25px rgba(190,140,255,.7);
 }
 
+/* کارت بانکی */
 .card {
     width: 380px;
-    height: 270px;
+    height: 250px;
     padding: 28px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #8f4bff, #4b1dbd);
+    border-radius: 24px;
+    background: linear-gradient(135deg, #9f6bff, #4b1dbd);
     box-shadow:
-        0 25px 50px rgba(0,0,0,.45),
-        inset 0 0 40px rgba(255,255,255,.12);
+        0 30px 60px rgba(0,0,0,.5),
+        inset 0 0 40px rgba(255,255,255,.15);
     position: relative;
     overflow: hidden;
 }
 
+/* نور کارت */
 .card::after {
     content: "";
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at top right,
-        rgba(255,255,255,.25),
+        rgba(255,255,255,.35),
         transparent 45%);
 }
 
+/* شماره کارت */
 .card-number {
     margin-top: 60px;
-    font-size: 27px;
+    font-size: 28px;
     letter-spacing: 3px;
     text-align: center;
-    color: #f5e9ff;
+    color: #f7edff;
     -webkit-text-stroke: 1px rgba(60,0,120,.9);
     text-shadow:
-        0 3px 8px rgba(0,0,0,.6),
-        0 0 12px rgba(200,150,255,.6);
+        0 4px 10px rgba(0,0,0,.7),
+        0 0 14px rgba(210,170,255,.7);
 }
 
-/* دکمه‌ها */
-.btn {
-    margin-top: 18px;
-    padding: 10px 26px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #c084fc, #8b5cf6);
+/* دکمه کپی */
+.copy-btn {
+    margin-top: 30px;
+    padding: 12px 28px;
+    border-radius: 16px;
     border: none;
-    color: #2b0a3d;
-    font-size: 18px;
+    background: linear-gradient(135deg, #e0c3ff, #a855f7);
+    color: #2a003f;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+    box-shadow: 0 10px 25px rgba(0,0,0,.4);
     transition: 0.25s;
 }
 
-.btn:hover {
-    transform: scale(1.08);
+.copy-btn:hover {
+    transform: scale(1.1);
 }
 
+/* پیام کپی */
 .copied {
-    margin-top: 10px;
+    margin-top: 14px;
     font-size: 16px;
-    color: #d8b4fe;
+    color: #e9d5ff;
     opacity: 0;
     transition: 0.3s;
 }
@@ -118,7 +123,7 @@ video {
 <body>
 
 <!-- ویدیو بک گراند -->
-<video id="bgVideo" loop muted>
+<video id="bgVideo" autoplay loop muted playsinline>
     <source src="bg.mp4" type="video/mp4">
 </video>
 
@@ -132,39 +137,41 @@ video {
             6037&nbsp;6981&nbsp;1893&nbsp;0903
         </div>
 
-        <button class="btn" onclick="copyCard()">کپی شماره کارت</button>
-        <button class="btn" onclick="playVideo()">🔊 فعال‌سازی صدا</button>
+        <button class="copy-btn" onclick="copyCard()">
+            📋 کپی شماره کارت
+        </button>
 
-        <div class="copied" id="copiedText">✅ شماره کارت کپی شد</div>
+        <div class="copied" id="copiedText">
+            ✅ شماره کارت کپی شد
+        </div>
     </div>
 </div>
 
 <script>
 function copyCard() {
-    const textToCopy = "6037698118930903";
+    const number = "6037698118930903";
 
-    const tempInput = document.createElement("textarea");
-    tempInput.value = textToCopy;
-    document.body.appendChild(tempInput);
+    // روش جدید
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(number).then(showCopied);
+    } else {
+        // fallback برای GitHub Pages قدیمی / موبایل
+        const temp = document.createElement("textarea");
+        temp.value = number;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        showCopied();
+    }
+}
 
-    tempInput.select();
-    tempInput.setSelectionRange(0, 99999);
-
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
-
+function showCopied() {
     const text = document.getElementById("copiedText");
     text.style.opacity = 1;
-
     setTimeout(() => {
         text.style.opacity = 0;
     }, 2000);
-}
-
-function playVideo() {
-    const video = document.getElementById("bgVideo");
-    video.muted = false;
-    video.play();
 }
 </script>
 

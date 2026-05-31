@@ -18,8 +18,27 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at top, #7b2cff, #2b0a3d 70%);
     color: #fff;
+    overflow: hidden;
+}
+
+/* ویدیو بک گراند */
+video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.55);
+}
+
+/* لایه گرادینت روی ویدیو */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, #7b2cffaa, #2b0a3dee 70%);
+    z-index: -1;
 }
 
 .container {
@@ -36,7 +55,7 @@ body {
 
 .card {
     width: 380px;
-    height: 250px;
+    height: 270px;
     padding: 28px;
     border-radius: 22px;
     background: linear-gradient(135deg, #8f4bff, #4b1dbd);
@@ -57,7 +76,7 @@ body {
 }
 
 .card-number {
-    margin-top: 55px;
+    margin-top: 60px;
     font-size: 27px;
     letter-spacing: 3px;
     text-align: center;
@@ -68,10 +87,9 @@ body {
         0 0 12px rgba(200,150,255,.6);
 }
 
-/* دکمه کپی */
-.copy-btn {
-    margin: 25px auto 0;
-    display: inline-block;
+/* دکمه‌ها */
+.btn {
+    margin-top: 18px;
     padding: 10px 26px;
     border-radius: 14px;
     background: linear-gradient(135deg, #c084fc, #8b5cf6);
@@ -83,12 +101,12 @@ body {
     transition: 0.25s;
 }
 
-.copy-btn:hover {
+.btn:hover {
     transform: scale(1.08);
 }
 
 .copied {
-    margin-top: 12px;
+    margin-top: 10px;
     font-size: 16px;
     color: #d8b4fe;
     opacity: 0;
@@ -99,6 +117,13 @@ body {
 
 <body>
 
+<!-- ویدیو بک گراند -->
+<video id="bgVideo" loop muted>
+    <source src="bg.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
 <div class="container">
     <div class="title">شماره کارت برای دونیت</div>
 
@@ -107,20 +132,26 @@ body {
             6037&nbsp;6981&nbsp;1893&nbsp;0903
         </div>
 
-        <button class="copy-btn" onclick="copyCard()">
-            کپی شماره کارت
-        </button>
+        <button class="btn" onclick="copyCard()">کپی شماره کارت</button>
+        <button class="btn" onclick="playVideo()">🔊 فعال‌سازی صدا</button>
 
-        <div class="copied" id="copiedText">
-            ✅ شماره کارت کپی شد
-        </div>
+        <div class="copied" id="copiedText">✅ شماره کارت کپی شد</div>
     </div>
 </div>
 
 <script>
 function copyCard() {
-    const number = "6037698118930903";
-    navigator.clipboard.writeText(number);
+    const textToCopy = "6037698118930903";
+
+    const tempInput = document.createElement("textarea");
+    tempInput.value = textToCopy;
+    document.body.appendChild(tempInput);
+
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
 
     const text = document.getElementById("copiedText");
     text.style.opacity = 1;
@@ -128,6 +159,12 @@ function copyCard() {
     setTimeout(() => {
         text.style.opacity = 0;
     }, 2000);
+}
+
+function playVideo() {
+    const video = document.getElementById("bgVideo");
+    video.muted = false;
+    video.play();
 }
 </script>
 
